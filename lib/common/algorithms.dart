@@ -1,23 +1,58 @@
-List<List<T>> generatePermutations<T>(List<T> list, int listLength) {
-  List<List<T>> result = [];
-  _permute(list, 0, list.length - 1, result);
-  return result.where((element) => element.length == listLength).toList();
+List<List<T>> permutationOf<T>(List<T> list, int size) {
+  final output = <List<T>>[];
+  _permute<T>(list, size, [], 0, output);
+  return output;
 }
 
-void _permute<T>(List<T> list, int left, int right, List<List<T>> result) {
-  if (left == right) {
-    result.add(List<T>.from(list));
-  } else {
-    for (int i = left; i <= right; i++) {
-      _swap(list, left, i);
-      _permute(list, left + 1, right, result);
-      _swap(list, left, i);
-    }
+Stream<List<T>> streammedPermutationOf<T>(List<T> list, int size) async* {
+  yield* _streammedPermute<T>(list, size, [], 0);
+}
+
+void _permute<T>(
+  List<T> list,
+  int size,
+  List<T> result,
+  int level,
+  List<List<T>> output,
+) {
+  if (level == size) {
+    final permutation = List<T>.of(result);
+    output.add(permutation);
+    return;
+  }
+
+  for (int i = 0; i < list.length; i++) {
+    result.add(list[i]);
+    _permute<T>(list, size, result, level + 1, output);
+    result.removeLast();
   }
 }
 
-void _swap<T>(List<T> list, int i, int j) {
-  var temp = list[i];
-  list[i] = list[j];
-  list[j] = temp;
+Stream<List<T>> _streammedPermute<T>(
+  List<T> list,
+  int size,
+  List<T> result,
+  int level,
+) async* {
+  if (level == size) {
+    final permutation = List<T>.of(result);
+    // yield permutation;
+    count++;
+    if (count % 1000000 == 0) {
+      count = 0;
+      millions += 1;
+      print('$millions millions');
+    }
+    return;
+  }
+
+  for (int i = 0; i < list.length; i++) {
+    result.add(list[i]);
+    yield* _streammedPermute<T>(list, size, result, level + 1);
+    result.removeLast();
+  }
 }
+
+bool removed = false;
+int count = 0;
+int millions = 0;

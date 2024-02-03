@@ -5,7 +5,7 @@ abstract class Level {
   late final int optimalMovements;
   late final Map<String, Node> nodes;
   late final Map<String, bool> nodeStatus;
-  
+
   initializeNodes(List<Node> nodeList) {
     nodes = {};
     nodeStatus = {};
@@ -16,14 +16,18 @@ abstract class Level {
     }
   }
 
-  void toggleNode(Node node) {
-    nodeStatus[node.name] = !nodeStatus[node.name]!;
-    for(final neighbor in node.neighbors) {
+  void toggleNode(String nodeName) {
+    nodeStatus[nodeName] = !nodeStatus[nodeName]!;
+    for (final neighbor in nodes[nodeName]!.neighbors) {
       nodeStatus[neighbor.name] = !nodeStatus[neighbor.name]!;
     }
   }
 
-  bool areAllNodesEnabled() {
-    return nodeStatus.values.any((isEnabled) => !isEnabled);
+  bool isCompleted() {
+    return !nodeStatus.values.any((isEnabled) => !isEnabled);
+  }
+
+  void reset() {
+    nodeStatus.updateAll((_, __) => false);
   }
 }

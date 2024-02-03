@@ -1,8 +1,8 @@
 import 'package:memorion_solver/common/level.dart';
 import 'package:memorion_solver/common/node.dart';
 
-class Level1 extends Level {
-  Level1() {
+class Level3 extends Level {
+  Level3() {
     number = 1;
     optimalMovements = 1;
 
