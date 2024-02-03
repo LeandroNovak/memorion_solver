@@ -30,6 +30,6 @@ class Level41 extends Level {
     j.neighbors = [g, h, i, k];
     k.neighbors = [i, j];
 
-    nodes = [a, b, c, d, e, f, g, h, i, j, k];
+    initializeNodes([a, b, c, d, e, f, g, h, i, j, k]);
   }
 }
